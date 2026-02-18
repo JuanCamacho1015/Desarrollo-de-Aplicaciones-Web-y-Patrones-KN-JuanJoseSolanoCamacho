@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "producto")
 public class Producto implements Serializable {
@@ -16,8 +18,9 @@ public class Producto implements Serializable {
     @Column(name = "id_producto")
     private Integer idProducto;
 
-    @Column(name = "id_categoria")
-    private Integer idCategoria;
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
 
     @Column(nullable = false, length = 50)
     @NotBlank(message = "La descripción no puede estar vacía.")
@@ -43,27 +46,64 @@ public class Producto implements Serializable {
     private boolean activo;
 
     // Getters/Setters (para NO depender de Lombok)
-    public Integer getIdProducto() { return idProducto; }
-    public void setIdProducto(Integer idProducto) { this.idProducto = idProducto; }
+    public Integer getIdProducto() {
+        return idProducto;
+    }
 
-    public Integer getIdCategoria() { return idCategoria; }
-    public void setIdCategoria(Integer idCategoria) { this.idCategoria = idCategoria; }
+    public void setIdProducto(Integer idProducto) {
+        this.idProducto = idProducto;
+    }
 
-    public String getDescripcion() { return descripcion; }
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+public Categoria getCategoria() { return categoria; }
+public void setCategoria(Categoria categoria) { this.categoria = categoria; }
 
-    public String getDetalle() { return detalle; }
-    public void setDetalle(String detalle) { this.detalle = detalle; }
 
-    public BigDecimal getPrecio() { return precio; }
-    public void setPrecio(BigDecimal precio) { this.precio = precio; }
 
-    public Integer getExistencias() { return existencias; }
-    public void setExistencias(Integer existencias) { this.existencias = existencias; }
+    public String getDescripcion() {
+        return descripcion;
+    }
 
-    public String getRutaImagen() { return rutaImagen; }
-    public void setRutaImagen(String rutaImagen) { this.rutaImagen = rutaImagen; }
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
-    public boolean isActivo() { return activo; }
-    public void setActivo(boolean activo) { this.activo = activo; }
+    public String getDetalle() {
+        return detalle;
+    }
+
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
+    }
+
+    public BigDecimal getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(BigDecimal precio) {
+        this.precio = precio;
+    }
+
+    public Integer getExistencias() {
+        return existencias;
+    }
+
+    public void setExistencias(Integer existencias) {
+        this.existencias = existencias;
+    }
+
+    public String getRutaImagen() {
+        return rutaImagen;
+    }
+
+    public void setRutaImagen(String rutaImagen) {
+        this.rutaImagen = rutaImagen;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
 }
