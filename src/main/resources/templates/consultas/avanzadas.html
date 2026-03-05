@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+    <head th:replace="~{general/fragmentos :: head}"/>
+
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"/>
+
+        <section class="container my-4">
+            <div class="d-flex align-items-center justify-content-between">
+                <h2 class="mb-0">Consultas avanzadas</h2>
+                <a class="btn btn-outline-secondary" th:href="@{/consultas/listado}">
+                    Volver a Consultas (básicas)
+                </a>
+            </div>
+            <hr/>
+        </section>
+
+        <!-- PRODUCTO -->
+        <section th:replace="~{consultas/avanzadas_fragmentos :: productoFormularios}"/>
+        <section th:replace="~{consultas/avanzadas_fragmentos :: productoResultados}"/>
+
+        <!-- CATEGORIA -->
+        <section th:replace="~{consultas/avanzadas_fragmentos :: categoriaFormularios}"/>
+        <section th:replace="~{consultas/avanzadas_fragmentos :: categoriaResultados}"/>
+
+        <footer th:replace="~{general/fragmentos :: footer}"/>
+    </body>
+</html>

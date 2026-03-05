@@ -66,7 +66,6 @@ public class ProductoService {
         try {
             productoRepository.deleteById(idProducto);
         } catch (DataIntegrityViolationException e) {
-            // Lanza una nueva excepción para encapsular el problema de integridad de datos
             throw new IllegalStateException("No se puede eliminar la producto. Tiene datos asociados.", e);
         }
     }
@@ -84,6 +83,34 @@ public class ProductoService {
     @Transactional(readOnly = true)
     public List<Producto> consultaSQL(BigDecimal precioInf, BigDecimal precioSup) {
         return productoRepository.consultaSQL(precioInf, precioSup);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Producto> consultaProductoAvanzadaDerivada(BigDecimal precioMin,
+            BigDecimal precioMax,
+            Integer existenciasMin,
+            String descripcionCategoria) {
+        return productoRepository
+                .findByActivoTrueAndPrecioBetweenAndExistenciasGreaterThanEqualAndCategoria_ActivoIsTrueAndCategoria_DescripcionContainingIgnoreCaseOrderByPrecioAsc(
+                        precioMin, precioMax, existenciasMin, descripcionCategoria);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Producto> consultaProductoAvanzadaJPQL(BigDecimal precioMin,
+            BigDecimal precioMax,
+            Integer existenciasMin,
+            String descripcionCategoria) {
+        return productoRepository.consultaProductoAvanzadaJPQL(
+                precioMin, precioMax, existenciasMin, descripcionCategoria);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Producto> consultaProductoAvanzadaSQL(BigDecimal precioMin,
+            BigDecimal precioMax,
+            Integer existenciasMin,
+            String descripcionCategoria) {
+        return productoRepository.consultaProductoAvanzadaSQL(
+                precioMin, precioMax, existenciasMin, descripcionCategoria);
     }
 
 }

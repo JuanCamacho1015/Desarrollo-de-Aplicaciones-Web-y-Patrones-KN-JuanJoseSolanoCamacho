@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <!-- =========================
+         FORMULARIOS PRODUCTO
+         ========================= -->
+    <section th:fragment="productoFormularios" class="container my-4">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3 class="mb-0">Consulta avanzada de Producto</h3>
+            <span th:if="${metodoProducto != null}" class="badge bg-info text-dark">
+                Ejecutado: <b th:text="${metodoProducto}"></b>
+            </span>
+        </div>
+        <p class="text-muted mb-3">
+            Filtra: activos, precio en rango, existencias mínimas, categoría activa y texto en descripción de categoría.
+        </p>
+
+        <div class="row g-3">
+
+            <!-- Derivada -->
+            <div class="col-12 col-lg-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white text-center">
+                        <b>Derivada</b>
+                    </div>
+
+                    <form class="card-body was-validated"
+                          method="post"
+                          th:action="@{/consultas/avanzadas/producto/derivada}">
+                        <div class="mb-2">
+                            <label class="form-label">Precio mínimo</label>
+                            <input type="number" step="0.01" min="0" class="form-control"
+                                   name="precioMin" th:value="${precioMin}" required/>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Precio máximo</label>
+                            <input type="number" step="0.01" min="0" class="form-control"
+                                   name="precioMax" th:value="${precioMax}" required/>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Existencias mínimas</label>
+                            <input type="number" min="0" class="form-control"
+                                   name="existenciasMin" th:value="${existenciasMin}" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Texto en descripción de categoría</label>
+                            <input type="text" class="form-control"
+                                   name="descripcionCategoria" th:value="${descripcionCategoria}" required/>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Ejecutar derivada
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- JPQL -->
+            <div class="col-12 col-lg-4">
+                <div class="card h-100">
+                    <div class="card-header bg-warning text-dark text-center">
+                        <b>JPQL (JOIN)</b>
+                    </div>
+
+                    <form class="card-body was-validated"
+                          method="post"
+                          th:action="@{/consultas/avanzadas/producto/jpql}">
+                        <div class="mb-2">
+                            <label class="form-label">Precio mínimo</label>
+                            <input type="number" step="0.01" min="0" class="form-control"
+                                   name="precioMin" th:value="${precioMin}" required/>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Precio máximo</label>
+                            <input type="number" step="0.01" min="0" class="form-control"
+                                   name="precioMax" th:value="${precioMax}" required/>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Existencias mínimas</label>
+                            <input type="number" min="0" class="form-control"
+                                   name="existenciasMin" th:value="${existenciasMin}" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Texto en descripción de categoría</label>
+                            <input type="text" class="form-control"
+                                   name="descripcionCategoria" th:value="${descripcionCategoria}" required/>
+                        </div>
+
+                        <button type="submit" class="btn btn-warning w-100">
+                            Ejecutar JPQL
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- SQL -->
+            <div class="col-12 col-lg-4">
+                <div class="card h-100">
+                    <div class="card-header bg-success text-white text-center">
+                        <b>SQL Nativa (JOIN)</b>
+                    </div>
+
+                    <form class="card-body was-validated"
+                          method="post"
+                          th:action="@{/consultas/avanzadas/producto/sql}">
+                        <div class="mb-2">
+                            <label class="form-label">Precio mínimo</label>
+                            <input type="number" step="0.01" min="0" class="form-control"
+                                   name="precioMin" th:value="${precioMin}" required/>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Precio máximo</label>
+                            <input type="number" step="0.01" min="0" class="form-control"
+                                   name="precioMax" th:value="${precioMax}" required/>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Existencias mínimas</label>
+                            <input type="number" min="0" class="form-control"
+                                   name="existenciasMin" th:value="${existenciasMin}" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Texto en descripción de categoría</label>
+                            <input type="text" class="form-control"
+                                   name="descripcionCategoria" th:value="${descripcionCategoria}" required/>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">
+                            Ejecutar SQL
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =========================
+         RESULTADOS PRODUCTO
+         ========================= -->
+    <section th:fragment="productoResultados" class="container my-4">
+        <div class="d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">Resultados (Producto)</h5>
+            <span class="text-muted" th:if="${productosAv != null}">
+                Total: <b th:text="${#lists.size(productosAv)}"></b>
+            </span>
+        </div>
+        <hr class="mt-2"/>
+
+        <div th:if="${productosAv == null || #lists.isEmpty(productosAv)}" class="alert alert-secondary">
+            No hay resultados. Ejecutá una de las 3 consultas de Producto.
+        </div>
+
+        <div th:if="${productosAv != null && !#lists.isEmpty(productosAv)}" class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Existencias</th>
+                        <th>Categoría</th>
+                        <th>Activos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${productosAv}">
+                        <td th:text="${p.idProducto}"></td>
+                        <td th:text="${p.descripcion}"></td>
+                        <td th:text="${#numbers.formatCurrency(p.precio)}"></td>
+                        <td th:text="${p.existencias}"></td>
+                        <td th:text="${p.categoria != null ? p.categoria.descripcion : ''}"></td>
+                        <td>
+                            <span class="badge bg-success" th:if="${p.activo}">Activo</span>
+                            <span class="badge bg-danger" th:unless="${p.activo}">Inactivo</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- =========================
+         FORMULARIOS CATEGORIA
+         ========================= -->
+    <section th:fragment="categoriaFormularios" class="container my-5">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3 class="mb-0">Consulta avanzada de Categoría</h3>
+            <span th:if="${metodoCategoria != null}" class="badge bg-info text-dark">
+                Ejecutado: <b th:text="${metodoCategoria}"></b>
+            </span>
+        </div>
+        <p class="text-muted mb-3">
+            Lista categorías activas con mínimo de productos activos, texto en descripción y orden por cantidad desc.
+        </p>
+
+        <div class="row g-3">
+
+            <!-- Derivada -->
+            <div class="col-12 col-lg-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white text-center">
+                        <b>Derivada (con limitaciones)</b>
+                    </div>
+
+                    <form class="card-body was-validated"
+                          method="post"
+                          th:action="@{/consultas/avanzadas/categoria/derivada}">
+                        <div class="mb-2">
+                            <label class="form-label">Cantidad mínima de productos activos</label>
+                            <input type="number" min="1" class="form-control"
+                                   name="cantidadMinProductos" th:value="${cantidadMinProductos}" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Texto en descripción</label>
+                            <input type="text" class="form-control"
+                                   name="textoDescripcion" th:value="${textoDescripcion}" required/>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Ejecutar derivada
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- JPQL -->
+            <div class="col-12 col-lg-4">
+                <div class="card h-100">
+                    <div class="card-header bg-warning text-dark text-center">
+                        <b>JPQL (JOIN + GROUP BY + HAVING)</b>
+                    </div>
+
+                    <form class="card-body was-validated"
+                          method="post"
+                          th:action="@{/consultas/avanzadas/categoria/jpql}">
+                        <div class="mb-2">
+                            <label class="form-label">Cantidad mínima de productos activos</label>
+                            <input type="number" min="1" class="form-control"
+                                   name="cantidadMinProductos" th:value="${cantidadMinProductos}" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Texto en descripción</label>
+                            <input type="text" class="form-control"
+                                   name="textoDescripcion" th:value="${textoDescripcion}" required/>
+                        </div>
+
+                        <button type="submit" class="btn btn-warning w-100">
+                            Ejecutar JPQL
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- SQL -->
+            <div class="col-12 col-lg-4">
+                <div class="card h-100">
+                    <div class="card-header bg-success text-white text-center">
+                        <b>SQL Nativa (JOIN + GROUP BY + HAVING)</b>
+                    </div>
+
+                    <form class="card-body was-validated"
+                          method="post"
+                          th:action="@{/consultas/avanzadas/categoria/sql}">
+                        <div class="mb-2">
+                            <label class="form-label">Cantidad mínima de productos activos</label>
+                            <input type="number" min="1" class="form-control"
+                                   name="cantidadMinProductos" th:value="${cantidadMinProductos}" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Texto en descripción</label>
+                            <input type="text" class="form-control"
+                                   name="textoDescripcion" th:value="${textoDescripcion}" required/>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">
+                            Ejecutar SQL
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =========================
+         RESULTADOS CATEGORIA
+         ========================= -->
+    <section th:fragment="categoriaResultados" class="container my-4">
+        <div class="d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">Resultados (Categoría)</h5>
+            <span class="text-muted" th:if="${categoriasAv != null}">
+                Total: <b th:text="${#lists.size(categoriasAv)}"></b>
+            </span>
+        </div>
+        <hr class="mt-2"/>
+
+        <div th:if="${categoriasAv == null || #lists.isEmpty(categoriasAv)}" class="alert alert-secondary">
+            No hay resultados. Ejecutá una de las 3 consultas de Categoría.
+        </div>
+
+        <div th:if="${categoriasAv != null && !#lists.isEmpty(categoriasAv)}" class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Cant. productos activos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c : ${categoriasAv}">
+                        <td th:text="${c.idCategoria}"></td>
+                        <td th:text="${c.descripcion}"></td>
+                        <td>
+                            <span class="badge bg-dark" th:text="${c.cantidad}"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</html>
