@@ -13,7 +13,6 @@ import org.springframework.core.io.ClassPathResource;
 @Configuration
 public class StorageConfig {
 
-    // ✅ Correcto: Spring usa ${...} para leer application.properties
     @Value("${firebase.json.path}")
     private String jsonPath;
 
@@ -22,8 +21,10 @@ public class StorageConfig {
 
     @Bean
     public Storage storage() throws IOException {
-        // ✅ Para recursos del classpath es mejor usar "/" (no File.separator)
+        String resourcePath = jsonPath + "/" + jsonFile;
+
         ClassPathResource resource = new ClassPathResource(jsonPath + "/" + jsonFile);
+        System.out.println(">>> Firebase JSON usado: " + resourcePath);
 
         try (InputStream inputStream = resource.getInputStream()) {
             GoogleCredentials credentials = GoogleCredentials.fromStream(inputStream);
